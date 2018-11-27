@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)http://www.cnblogs.com/Javame/p/9503597.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/osd.js"></script><script src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/pubads_impl_rendering_275.js"></script><script src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/hm.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+<title>ELK 日志采集 实战教程 - CTO老王 - 博客园</title>
+<meta property="og:description" content="概要 带着问题去看教程： 不是用logstash来监听我们的日志，我们可以使用logback配置来使用TCP appender通过TCP协议将日志发送到远程Logstash实例。 我们可以使用Logs">
+<link type="text/css" rel="stylesheet" href="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/bundle-darkgreentrip.css">
+<link type="text/css" rel="stylesheet" href="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/87247.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/bundle-darkgreentrip-mobile.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/Javame/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/Javame/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/Javame/wlwmanifest.xml">
+<script async="" src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/analytics.js"></script><script src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'Javame', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/blog-common.js" type="text/javascript"></script>
+<link rel="preload" href="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/integrator.js" as="script"><script type="text/javascript" src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/integrator.js"></script><script src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/pubads_impl_275.js" async=""></script></head>
+<body>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<p style="color:white"><b>【·CTO老王·】</b></p>
+<img src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/o_cto.png">
+<!--PageBeginHtml Block End-->
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/Javame/"><img id="blogLogo" src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/Javame/"></a></h1>
+<h2><br>
+点点滴滴让CTO老王带你一步一步走过从菜鸟走向CTO的历程。</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/Javame/">首页</a></li>
+<li><a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/CTO%E8%80%81%E7%8E%8B">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/Javame/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/Javame/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 196&nbsp; </span>
+<span id="stats_article_count">文章 - 3&nbsp; </span>
+<span id="stats-comment_count">评论 - 106</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/Javame/p/9503597.html">ELK 日志采集 实战教程</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><h2>&nbsp;概要</h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;带着问题去看教程：</p>
+<ul class="list-paddingleft-2">
+<li>
+<p>不是用logstash来监听我们的日志，我们可以使用logback配置来使用TCP appender通过TCP协议将日志发送到远程Logstash实例。</p>
+</li>
+<li>
+<p>我们可以使用Logstash指向多个日志文件。</p>
+</li>
+<li>
+<p>我们可以在logstash配置文件中使用更复杂的过滤器，以根据需要执行更多操作。</p>
+</li>
+<li>
+<p>我们可以使用远程ELK集群指向我们的日志文件，或者将日志推入，这在将所有应用程序部署到云中时基本上是必需的。</p>
+</li>
+<li>
+<p>在logstash中创建不同的索引模式。</p>
+</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通过使用微服务，我们已经能够克服许多遗留问题，并且它允许我们创建稳定的分布式应用程序，并对代码，团队规模，维护，发布周期，云计算等进行所需的控制。但它也引入了一些挑战。其他领域，例如分布式日志管理和查看在许多服务中分布的完整事务的日志和一般的分布式调试的能力。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际上，挑战在于微服务是相互隔离的，它们不共享公共数据库和日志文件。随着微服务数量的增加以及我们使用自动化持续集成工具实现云部署，当我们遇到任何问题时，非常有必要对组件进行一些调试。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;感谢开源运动。我们已经拥有了一系列工具，如果一起使用可以发挥魔力。一组如此受欢迎的工具是Elastic Search，Logstash和Kibana&nbsp;- 一起称为ELK Stack&nbsp;。它们用于实时搜索，分析和可视化日志数据。&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<h2>ELK Stack</h2>
+<ol class="list-paddingleft-2">
+<li>
+<p>Elasticsearch是一个基于JSON的分布式<em>搜索和分析引擎，</em>专为水平可扩展性，最高可靠性和易管理性而设计。</p>
+</li>
+<li>
+<p>Logstash是一个动态<em>数据收集管道</em>，具有可扩展的插件生态系统和强大的Elasticsearch协同作用。</p>
+</li>
+<li>
+<p>Kibana通过UI&nbsp;提供数据<em>可视化</em>。</p>
+</li>
+</ol>
+<h4>ELK Stack架构</h4>
+<p>Logstash根据我们设置的过滤条件处理应用程序日志文件，并将这些日志发送到Elasticsearch。通过Kibana，我们可以在需要时查看和分析这些日志。<img src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/291579-20180820081346386-1019560227.png" alt=""></p>
+<h2>ELK配置</h2>
+<p>所有这三个工具都基于JVM，在开始安装之前，请验证JDK是否已正确配置。检查标准JDK 1.8安装，<code>JAVA_HOME</code>并且<code>PATH</code>已经完成设置。</p>
+<h4>Elasticsearch</h4>
+<ul class="list-paddingleft-2">
+<li>
+<p>从此下载页面下载最新版本的Elasticsearch&nbsp;并将其解压缩到任何文件夹中。</p>
+</li>
+<li>
+<p><code>bin\elasticsearch.bat</code>从命令提示符运行。</p>
+</li>
+<li>
+<p>默认情况下，它将从http：// localhost：9200</p>
+</li>
+</ul>
+<h4>Kibana</h4>
+<ul class="list-paddingleft-2">
+<li>
+<p>从下载页面下载最新的发行版并解压缩到任何文件夹中。</p>
+</li>
+<li>
+<p><code>config/kibana.yml</code>在编辑器中打开并设置<code>elasticsearch.url</code>为指向您的Elasticsearch实例。在我们的例子中，我们将使用本地实例取消注释<code>elasticsearch.url: "http://localhost:9200"</code></p>
+</li>
+<li>
+<p><code>bin\kibana.bat</code>从命令提示符运行。</p>
+</li>
+<li>
+<p>成功启动后，Kibana将启动默认端口<code>5601</code>，Kibana UI将在http：// localhost：5601上提供</p>
+</li>
+</ul>
+<h4>Logstash</h4>
+<ul class="list-paddingleft-2">
+<li>
+<p>从下载页面下载最新的发行版并解压缩到任何文件夹中。</p>
+</li>
+<li>
+<p><code>logstash.conf</code>根据配置说明创建一个文件。在实际演示时间内，我们将再次进行精确配置。</p>
+<p>现在运行<code>bin/logstash -f logstash.conf</code>以启动logstash</p>
+</li>
+</ul>
+<p>ELK堆栈未启动并正在运行。现在我们需要创建一些微服务并指向API日志路径的logstash。</p>
+<h2>创建微服务</h2>
+<h4>创建Spring Boot项目</h4>
+<p>让我们使用spring boot创建一个应用程序，以缩短开发时间。请按照这些步骤启动此服务。</p>
+<h4>添加REST端点</h4>
+<p>添加一个<code>RestController</code>类会暴露一些端点一样<code>/elk</code>，<code>/elkdemo</code>，<code>/exception</code>。实际上我们只会测试几个日志语句，因此可以根据您的选择随意添加/修改日志。</p>
+<table style="height: 1417px; width: 1301px;" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td width="447" height="NaN">
+<div><code>package</code>&nbsp;<code>com.example.howtodoinjava.elkexamplespringboot;</code></div>
+<div>&nbsp;</div>
+<div><code>import</code>&nbsp;<code>java.io.PrintWriter;</code></div>
+<div><code>import</code>&nbsp;<code>java.io.StringWriter;</code></div>
+<div><code>import</code>&nbsp;<code>java.util.Date;</code></div>
+<div>&nbsp;</div>
+<div><code>import</code>&nbsp;<code>org.apache.log4j.Level;</code></div>
+<div><code>import</code>&nbsp;<code>org.apache.log4j.Logger;</code></div>
+<div><code>import</code>&nbsp;<code>org.springframework.beans.factory.annotation.Autowired;</code></div>
+<div><code>import</code>&nbsp;<code>org.springframework.boot.SpringApplication;</code></div>
+<div><code>import</code>&nbsp;<code>org.springframework.boot.autoconfigure.SpringBootApplication;</code></div>
+<div><code>import</code>&nbsp;<code>org.springframework.context.annotation.Bean;</code></div>
+<div><code>import</code>&nbsp;<code>org.springframework.core.ParameterizedTypeReference;</code></div>
+<div><code>import</code>&nbsp;<code>org.springframework.http.HttpMethod;</code></div>
+<div><code>import</code>&nbsp;<code>org.springframework.web.bind.annotation.RequestMapping;</code></div>
+<div><code>import</code>&nbsp;<code>org.springframework.web.bind.annotation.RestController;</code></div>
+<div><code>import</code>&nbsp;<code>org.springframework.web.client.RestTemplate;</code></div>
+<div>&nbsp;</div>
+<div><code>@SpringBootApplication</code></div>
+<div><code>public</code>&nbsp;<code>class</code>&nbsp;<code>ElkExampleSpringBootApplication {</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>public</code>&nbsp;<code>static</code>&nbsp;<code>void</code>&nbsp;<code>main(String[] args) {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>SpringApplication.run(ElkExampleSpringBootApplication.</code><code>class</code><code>, args);</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}</code></div>
+<div><code>}</code></div>
+<div>&nbsp;</div>
+<div><code>@RestController</code></div>
+<div><code>class</code>&nbsp;<code>ELKController {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>private</code>&nbsp;<code>static</code>&nbsp;<code>final</code>&nbsp;<code>Logger LOG = Logger.getLogger(ELKController.</code><code>class</code><code>.getName());</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>@Autowired</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>RestTemplate restTemplete;</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>@Bean</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>RestTemplate restTemplate() {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>return</code>&nbsp;<code>new</code>&nbsp;<code>RestTemplate();</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>@RequestMapping</code><code>(value =&nbsp;</code><code>"/elkdemo"</code><code>)</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>public</code>&nbsp;<code>String helloWorld() {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>String response =&nbsp;</code><code>"Hello user ! "</code>&nbsp;<code>+&nbsp;</code><code>new</code>&nbsp;<code>Date();</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>LOG.log(Level.INFO,&nbsp;</code><code>"/elkdemo - &amp;gt; "</code>&nbsp;<code>+ response);</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>return</code>&nbsp;<code>response;</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>@RequestMapping</code><code>(value =&nbsp;</code><code>"/elk"</code><code>)</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>public</code>&nbsp;<code>String helloWorld1() {</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>String response = restTemplete.exchange(</code><code>"http://localhost:8080/elkdemo"</code><code>, HttpMethod.GET,&nbsp;</code><code>null</code><code>,&nbsp;</code><code>new</code><code>ParameterizedTypeReference() {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}).getBody();</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>LOG.log(Level.INFO,&nbsp;</code><code>"/elk - &amp;gt; "</code>&nbsp;<code>+ response);</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>try</code>&nbsp;<code>{</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>String exceptionrsp = restTemplete.exchange(</code><code>"http://localhost:8080/exception"</code><code>, HttpMethod.GET,&nbsp;</code><code>null</code><code>,</code><code>new</code>&nbsp;<code>ParameterizedTypeReference() {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}).getBody();</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>LOG.log(Level.INFO,&nbsp;</code><code>"/elk trying to print exception - &amp;gt; "</code>&nbsp;<code>+ exceptionrsp);</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>response = response +&nbsp;</code><code>" === "</code>&nbsp;<code>+ exceptionrsp;</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}&nbsp;</code><code>catch</code>&nbsp;<code>(Exception e) {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>// exception should not reach here. Really bad practice :)</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>return</code>&nbsp;<code>response;</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>@RequestMapping</code><code>(value =&nbsp;</code><code>"/exception"</code><code>)</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>public</code>&nbsp;<code>String exception() {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>String rsp =&nbsp;</code><code>""</code><code>;</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>try</code>&nbsp;<code>{</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>int</code>&nbsp;<code>i =&nbsp;</code><code>1</code>&nbsp;<code>/&nbsp;</code><code>0</code><code>;</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>// should get exception</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}&nbsp;</code><code>catch</code>&nbsp;<code>(Exception e) {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>e.printStackTrace();</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>LOG.error(e);</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>StringWriter sw =&nbsp;</code><code>new</code>&nbsp;<code>StringWriter();</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>PrintWriter pw =&nbsp;</code><code>new</code>&nbsp;<code>PrintWriter(sw);</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>e.printStackTrace(pw);</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>String sStackTrace = sw.toString();&nbsp;</code><code>// stack trace as a string</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>LOG.error(</code><code>"Exception As String :: - &amp;gt; "</code><code>+sStackTrace);</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>rsp = sStackTrace;</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>return</code>&nbsp;<code>rsp;</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}</code></div>
+<div><code>}</code></div>
+</td>
+</tr>
+</tbody>
+</table>
+<h4>配置Spring引导记录</h4>
+<p><code>application.properties</code>在<code>resources</code>文件夹下打开并添加以下配置条目。</p>
+<table style="width: 859px;" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td width="857" height="NaN">
+<div><code>logging.file=elk-example.log</code></div>
+<div><code>spring.application.name = elk-example</code></div>
+</td>
+</tr>
+</tbody>
+</table>
+<h4>验证微服务生成的日志</h4>
+<p>通过浏览http：// localhost：8080 / elk，<code>mvn clean install</code>使用命令<code>java -jar target\elk-example-spring-boot-0.0.1-SNAPSHOT.jar</code>和测试来执行最终的maven构建并启动应用程序。</p>
+<p>不要害怕看到屏幕上的大堆栈跟踪，因为有意识地看看ELK如何处理异常消息。</p>
+<p>转到应用程序根目录并验证是否<code>elk-example.log</code>已创建日志文件，并对端点执行几次访问，并验证日志文件中是否添加了日志。</p>
+<p>&nbsp;</p>
+<h2>Logstash配置</h2>
+<p>我们需要创建一个logstash配置文件，以便它监听日志文件并将日志消息推送到弹性搜索。以下是示例中使用的logstash&nbsp;配置，请根据您的设置更改日志路径。</p>
+<table style="height: 777px; width: 1271px;" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td width="447" height="NaN">
+<div><code>input {</code></div>
+<div><code>&nbsp;&nbsp;</code><code>file {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>type =&gt;&nbsp;</code><code>"java"</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>path =&gt;&nbsp;</code><code>"F:/Study/eclipse_workspace_mars/elk-example-spring-boot/elk-example.log"</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>codec =&gt; multiline {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>pattern =&gt;&nbsp;</code><code>"^%{YEAR}-%{MONTHNUM}-%{MONTHDAY} %{TIME}.*"</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>negate =&gt;&nbsp;</code><code>"true"</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>what =&gt;&nbsp;</code><code>"previous"</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}</code></div>
+<div><code>&nbsp;&nbsp;</code><code>}</code></div>
+<div><code>}</code></div>
+<div>&nbsp;</div>
+<div><code>filter {</code></div>
+<div><code>&nbsp;&nbsp;</code><code>#If log line contains tab character followed by&nbsp;</code><code>'at'</code>&nbsp;<code>then we will tag that entry as stacktrace</code></div>
+<div><code>&nbsp;&nbsp;</code><code>if</code>&nbsp;<code>[message] =~&nbsp;</code><code>"\tat"</code>&nbsp;<code>{</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>grok {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>match =&gt; [</code><code>"message"</code><code>,&nbsp;</code><code>"^(\tat)"</code><code>]</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>add_tag =&gt; [</code><code>"stacktrace"</code><code>]</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>}</code></div>
+<div><code>&nbsp;&nbsp;</code><code>}</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;</code><code>grok {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>match =&gt; [&nbsp;</code><code>"message"</code><code>,</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>"(?&lt;timestamp&gt;%{YEAR}-%{MONTHNUM}-%{MONTHDAY} %{TIME})&nbsp; %{LOGLEVEL:level} %{NUMBER:pid} --- \[(?&lt;thread&gt;[A-Za-z0-9-]+)\] [A-Za-z0-9.]*\.(?&lt;class&gt;[A-Za-z0-9#_]+)\s*:\s+(?&lt;logmessage&gt;.*)"</code><code>,</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>"message"</code><code>,</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>"(?&lt;timestamp&gt;%{YEAR}-%{MONTHNUM}-%{MONTHDAY} %{TIME})&nbsp; %{LOGLEVEL:level} %{NUMBER:pid} --- .+? :\s+(?&lt;logmessage&gt;.*)"</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code>]</code></div>
+<div><code>&nbsp;&nbsp;</code><code>}</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;</code>&nbsp;</div>
+<div><code>&nbsp;&nbsp;</code><code>date {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>match =&gt; [&nbsp;</code><code>"timestamp"</code>&nbsp;<code>,&nbsp;</code><code>"yyyy-MM-dd HH:mm:ss.SSS"</code>&nbsp;<code>]</code></div>
+<div><code>&nbsp;&nbsp;</code><code>}</code></div>
+<div><code>}</code></div>
+<div>&nbsp;</div>
+<div><code>output {</code></div>
+<div><code>&nbsp;&nbsp;</code>&nbsp;</div>
+<div><code>&nbsp;&nbsp;</code><code>stdout {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>codec =&gt; rubydebug</code></div>
+<div><code>&nbsp;&nbsp;</code><code>}</code></div>
+<div>&nbsp;</div>
+<div><code>&nbsp;&nbsp;</code><code># Sending properly parsed log events to elasticsearch</code></div>
+<div><code>&nbsp;&nbsp;</code><code>elasticsearch {</code></div>
+<div><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><code>hosts =&gt; [</code><code>"localhost:9200"</code><code>]</code></div>
+<div><code>&nbsp;&nbsp;</code><code>}</code></div>
+<div><code>}</code></div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h2>Kibana配置</h2>
+<p>在查看Kibana中的日志之前，我们需要配置索引模式。我们可以配置<code>logstash-*</code>为默认配置。我们总是可以在logstash端更改此索引模式并在Kibana中进行配置。为简单起见，我们将使用默认配置。</p>
+<p>索引模式管理页面如下所示。通过这种配置，我们将Kibana指向您选择的Elasticsearch索引。Logstash使用名称模式创建索引。<code>logstash-YYYY.MM.DD</code>我们可以在Kibana控制台http：// localhost：5601 / app / kibana中执行所有这些配置，然后转到左侧面板中的Management链接。</p>
+<p><img src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/291579-20180820081408229-24824343.png" alt=""></p>
+<h2>验证ELK</h2>
+<p>现在，当所有组件都启动并运行时，让我们验证整个生态系统。</p>
+<p>转到应用程序并测试端点几次以便生成日志，然后转到Kibana控制台，看看日志是否正确堆叠在Kibana中，还有许多额外的功能，比如我们可以过滤，查看内置的不同图表等。</p>
+<p>以下是Kibana中生成的日志的视图。</p>
+<p><img src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/291579-20180820081423905-1265525453.png" alt=""></p>
+<p>&nbsp;</p></div><div id="MySignature" style="display: block;"><b>微信公众号：</b><br>
+<img src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/o_cto(1).png">
+ <br>
+<b>我的关键词：</b><br>
+传统行业转互联网+ <br>
+一站式项目转分布式 <br>
+SOA与微服务架构设计 <br>
+微服务服务治理 <br>
+性能测试 <br>
+性能优化 <br>
+Linux网络层、应用层架构 <br>
+web安全全面覆盖渗入测试 <br>
+
+web安全等级评估 <br></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(9503597,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow(&#39;f24058a5-7365-e011-a53f-842b2b196315&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/Javame/" target="_blank"><img src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/20170612162241.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/Javame/">CTO老王</a><br>
+            <a href="http://home.cnblogs.com/u/Javame/followees">关注 - 6</a><br>
+            <a href="http://home.cnblogs.com/u/Javame/followers">粉丝 - 335</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;f24058a5-7365-e011-a53f-842b2b196315&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(9503597,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(9503597,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="https://www.cnblogs.com/Javame/p/9503557.html" class="p_n_p_prefix">« </a> 上一篇：<a href="https://www.cnblogs.com/Javame/p/9503557.html" title="发布于2018-08-20 07:29">教你搞定ElasticSearch（head）</a><br><a href="https://www.cnblogs.com/Javame/p/9510278.html" class="p_n_p_prefix">» </a> 下一篇：<a href="https://www.cnblogs.com/Javame/p/9510278.html" title="发布于2018-08-21 11:15">Elasticsearch（ES）API 增删查改常用操作</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2018-08-20 08:16</span> <a href="https://www.cnblogs.com/Javame/">CTO老王</a> 阅读(<span id="post_view_count">441</span>) 评论(<span id="post_comment_count">0</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=9503597" rel="nofollow">编辑</a> <a href="http://www.cnblogs.com/Javame/p/9503597.html#" onclick="AddToWz(9503597);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=87247,cb_entryId=9503597,cb_blogApp=currentBlogApp,cb_blogUserGuid='f24058a5-7365-e011-a53f-842b2b196315',cb_entryCreatedDate='2018/8/20 8:16:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="http://www.cnblogs.com/Javame/p/9503597.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/Javame/p/9503597.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank">【推荐】超50万VC++源码: 大型组态工控、电力仿真CAD与GIS源码库！</a><br><a href="http://clickc.admaster.com.cn/c/a116493,b2949399,c1705,i0,m101,8a1,8b3,h" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-华为云&#39;)">【活动】申请成为华为云云享专家 尊享9大权益</a><br><a href="https://www.grapecity.com.cn/developer/spreadjs?utm_source=cnblogs&amp;utm_medium=blogpage&amp;utm_term=bottom&amp;utm_content=SpreadJS&amp;utm_campaign=community" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-SpreadJS&#39;)">【工具】SpreadJS纯前端表格控件，可嵌入应用开发的在线Excel</a><br><a href="https://cloud.tencent.com/act/group/amd/index?fromSource=gwzcw.1608278.1608278.1608278" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-腾讯云&#39;)">【腾讯云】拼团福利，AMD云服务器8元/月</a><br></div>
+<div id="opt_under_post"></div>
+<div id="cnblogs_c1" class="c_ad_block"><a href="https://cloud.tencent.com/act/double11?fromSource=gwzcw.1608279.1608279.1608279" target="_blank"><img width="300" height="250" src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/24442-20181116205423366-85420768.jpg" alt="qcloud" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;C1&#39;);"></a></div>
+<div id="under_post_news"></div>
+<script async="async" src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/gpt.js"></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id="cnblogs_c2" class="c_ad_block">
+    <div id="div-gpt-ad-1539008685004-0" style="height:60px; width:468px;" data-google-query-id="CInUzY_79N4CFcu0lgod_LUH_w">
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    <div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" width="468" height="60" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" data-google-container-id="1" data-load-complete="true" src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/saved_resource.html"></iframe></div></div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block"><b>最新新闻</b>：<br> ·  <a href="https://news.cnblogs.com/n/613394/" target="_blank">因业务竞争？宝宝树CEO炮轰百度人为降低其搜索权重</a><br> ·  <a href="https://news.cnblogs.com/n/613393/" target="_blank">"基因编辑婴儿"知情同意书曝光：经费来自南科大</a><br> ·  <a href="https://news.cnblogs.com/n/613392/" target="_blank">途牛第三季度净利润410万美元 同比扭亏</a><br> ·  <a href="https://news.cnblogs.com/n/613391/" target="_blank">比特币兴衰有时而今矿机论斤卖 未来路在何方？</a><br> ·  <a href="https://news.cnblogs.com/n/613390/" target="_blank">连尚网络启动卫星上网计划：2026年覆盖全球免费卫星网络</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><p>
+<img src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/20170612162241(1).png">
+     </p>
+
+
+
+     <p><b>
+网名：
+CTO老王</b><br>
+手机：
+13400065433 <br>
+微信号：
+wonter <br>
+
+<b>微信公众号：</b><br>
+<img src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/o_cto.png">
+ <br>
+<b>我的关键词：</b><br>
+传统行业转互联网+ <br>
+一站式项目转分布式 <br>
+SOA与微服务架构设计 <br>
+微服务服务治理 <br>
+性能测试 <br>
+性能优化 <br>
+Linux网络层、应用层架构 <br>
+web安全全面覆盖渗入测试 <br>
+
+web安全等级评估 <br>
+
+web安全漏洞评级 <br>
+
+web安全漏洞修改建议 <br>
+
+web安全培训 <br>
+<!--
+收费标准： <br>
+
+严重漏洞：200元 <br>
+
+中等漏洞：100元 <br>
+
+普通漏洞：50元（共性打包） <br>
+
+警告漏洞：20元（共性打包） <br>
+
+回归安全评估：100元 <br>
+
+中小型网站总价上限5000元<br>
+
+大型网站含子网站上限20000元 <br>
+
+长期合作总价8折，回归安全评估5折。第二次合作生效。 <br>
+
+不接黑色生意！ <br>
+-->
+
+乌云资深白帽子，对安全测试颇有心得。白帽子成功案例很多，主要擅长领域：SQL注入 脱库、站点伪造、寻找架构漏洞，越过效验获取资源等。
+
+
+
+
+     <a style="padding-right:20px;" href="http://wpa.qq.com/msgrd?v=3&amp;uin=50625190&amp;site=qq&amp;menu=yes" target="_blank"><img style="vertical-align:bottom; border:0px" src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/腾讯QQ图标下载11.png" alt="点击这里给我发消息"></a>
+     </p>
+     <br>
+     <p>
+     <a href="http://weibo.com/wontter" target="_blank">
+     <img src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/100905444732.png" alt="">
+
+<img src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/o_111111.jpg">
+</a>
+<br>
+访问人数：<br>
+<a href="http://www.amazingcounters.com/"><img border="0" src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/counter.php" alt="AmazingCounters.com"></a>
+<br>
+总访问量：<br>
+<a href="http://www.amazingcounters.com/"><img border="0" src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/counter(1).php" alt="AmazingCounters.com"></a> <br>
+     </p><div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/Javame/">CTO老王</a><br>园龄：<a href="https://home.cnblogs.com/u/Javame/" title="入园时间：2011-04-13">7年7个月</a><br>粉丝：<a href="https://home.cnblogs.com/u/Javame/followers/">335</a><br>关注：<a href="https://home.cnblogs.com/u/Javame/followees/">6</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow(&#39;f24058a5-7365-e011-a53f-842b2b196315&#39;)">+加关注</a></div><script>getFollowStatus('f24058a5-7365-e011-a53f-842b2b196315')</script></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2018/10/01&#39;);return false;">&lt;</a></td><td align="center">2018年11月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2018/12/01&#39;);return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">28</td><td class="CalOtherMonthDay" align="center">29</td><td class="CalOtherMonthDay" align="center">30</td><td class="CalOtherMonthDay" align="center">31</td><td align="center">1</td><td align="center">2</td><td class="CalWeekendDay" align="center">3</td></tr><tr><td class="CalWeekendDay" align="center">4</td><td align="center">5</td><td align="center">6</td><td align="center"><a href="https://www.cnblogs.com/Javame/archive/2018/11/07.html"><u>7</u></a></td><td align="center">8</td><td align="center"><a href="https://www.cnblogs.com/Javame/archive/2018/11/09.html"><u>9</u></a></td><td class="CalWeekendDay" align="center">10</td></tr><tr><td class="CalWeekendDay" align="center">11</td><td align="center">12</td><td align="center">13</td><td align="center">14</td><td align="center">15</td><td align="center">16</td><td class="CalWeekendDay" align="center">17</td></tr><tr><td class="CalWeekendDay" align="center">18</td><td align="center">19</td><td align="center"><a href="https://www.cnblogs.com/Javame/archive/2018/11/20.html"><u>20</u></a></td><td align="center">21</td><td align="center">22</td><td align="center">23</td><td class="CalWeekendDay" align="center">24</td></tr><tr><td class="CalWeekendDay" align="center">25</td><td align="center">26</td><td align="center"><a href="https://www.cnblogs.com/Javame/archive/2018/11/27.html"><u>27</u></a></td><td class="CalTodayDay" align="center">28</td><td align="center">29</td><td align="center">30</td><td class="CalOtherMonthDay" align="center">1</td></tr><tr><td class="CalOtherMonthDay" align="center">2</td><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block">
+<div id="sidebar_search" class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="sidebar_search_box">
+<div id="widget_my_zzk" class="div_my_zzk"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk"></div>
+<div id="widget_my_google" class="div_my_zzk"><input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event)" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk"></div>
+</div>
+</div>
+
+</div><div id="sidebar_shortcut" class="sidebar-block">
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/Javame/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="https://www.cnblogs.com/Javame/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="https://www.cnblogs.com/Javame/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="https://www.cnblogs.com/Javame/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="https://www.cnblogs.com/Javame/tag/" title="我的博客的标签列表">我的标签</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div></div><div id="sidebar_toptags" class="sidebar-block">
+<div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/Javame/tag/java/">java</a>(10)</li><li><a href="https://www.cnblogs.com/Javame/tag/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">性能测试</a>(9)</li><li><a href="https://www.cnblogs.com/Javame/tag/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/">性能调优</a>(5)</li><li><a href="https://www.cnblogs.com/Javame/tag/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/">软件测试</a>(5)</li><li><a href="https://www.cnblogs.com/Javame/tag/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>(5)</li><li><a href="https://www.cnblogs.com/Javame/tag/watir-webdriver/">watir-webdriver</a>(5)</li><li><a href="https://www.cnblogs.com/Javame/tag/LoadRunner/">LoadRunner</a>(3)</li><li><a href="https://www.cnblogs.com/Javame/tag/%E6%B5%8B%E8%AF%95/">测试</a>(3)</li><li><a href="https://www.cnblogs.com/Javame/tag/js/">js</a>(3)</li><li><a href="https://www.cnblogs.com/Javame/tag/Linux/">Linux</a>(3)</li><li><a href="https://www.cnblogs.com/Javame/tag/">更多</a></li>
+</ul>
+</div></div><div id="sidebar_categories">
+<div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+<h3 class="catListTitle">随笔档案</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="https://www.cnblogs.com/Javame/archive/2018/11.html">2018年11月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="https://www.cnblogs.com/Javame/archive/2018/10.html">2018年10月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="https://www.cnblogs.com/Javame/archive/2018/09.html">2018年9月 (18)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="https://www.cnblogs.com/Javame/archive/2018/08.html">2018年8月 (11)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="https://www.cnblogs.com/Javame/archive/2018/07.html">2018年7月 (5)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_5" href="https://www.cnblogs.com/Javame/archive/2018/06.html">2018年6月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_6" href="https://www.cnblogs.com/Javame/archive/2018/05.html">2018年5月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_7" href="https://www.cnblogs.com/Javame/archive/2018/04.html">2018年4月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_8" href="https://www.cnblogs.com/Javame/archive/2018/03.html">2018年3月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_9" href="https://www.cnblogs.com/Javame/archive/2018/02.html">2018年2月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_10" href="https://www.cnblogs.com/Javame/archive/2018/01.html">2018年1月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_11" href="https://www.cnblogs.com/Javame/archive/2017/12.html">2017年12月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_12" href="https://www.cnblogs.com/Javame/archive/2017/11.html">2017年11月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_13" href="https://www.cnblogs.com/Javame/archive/2017/10.html">2017年10月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_14" href="https://www.cnblogs.com/Javame/archive/2017/09.html">2017年9月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_15" href="https://www.cnblogs.com/Javame/archive/2017/08.html">2017年8月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_16" href="https://www.cnblogs.com/Javame/archive/2017/07.html">2017年7月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_17" href="https://www.cnblogs.com/Javame/archive/2017/06.html">2017年6月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_18" href="https://www.cnblogs.com/Javame/archive/2017/04.html">2017年4月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_19" href="https://www.cnblogs.com/Javame/archive/2017/03.html">2017年3月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_20" href="https://www.cnblogs.com/Javame/archive/2017/02.html">2017年2月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_21" href="https://www.cnblogs.com/Javame/archive/2017/01.html">2017年1月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_22" href="https://www.cnblogs.com/Javame/archive/2016/11.html">2016年11月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_23" href="https://www.cnblogs.com/Javame/archive/2016/10.html">2016年10月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_24" href="https://www.cnblogs.com/Javame/archive/2016/09.html">2016年9月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_25" href="https://www.cnblogs.com/Javame/archive/2016/08.html">2016年8月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_26" href="https://www.cnblogs.com/Javame/archive/2016/07.html">2016年7月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_27" href="https://www.cnblogs.com/Javame/archive/2016/05.html">2016年5月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_28" href="https://www.cnblogs.com/Javame/archive/2016/03.html">2016年3月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_29" href="https://www.cnblogs.com/Javame/archive/2016/01.html">2016年1月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_30" href="https://www.cnblogs.com/Javame/archive/2015/12.html">2015年12月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_31" href="https://www.cnblogs.com/Javame/archive/2015/11.html">2015年11月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_32" href="https://www.cnblogs.com/Javame/archive/2015/07.html">2015年7月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_33" href="https://www.cnblogs.com/Javame/archive/2015/06.html">2015年6月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_34" href="https://www.cnblogs.com/Javame/archive/2015/05.html">2015年5月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_35" href="https://www.cnblogs.com/Javame/archive/2015/04.html">2015年4月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_36" href="https://www.cnblogs.com/Javame/archive/2015/03.html">2015年3月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_37" href="https://www.cnblogs.com/Javame/archive/2015/02.html">2015年2月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_38" href="https://www.cnblogs.com/Javame/archive/2015/01.html">2015年1月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_39" href="https://www.cnblogs.com/Javame/archive/2014/12.html">2014年12月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_40" href="https://www.cnblogs.com/Javame/archive/2014/11.html">2014年11月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_41" href="https://www.cnblogs.com/Javame/archive/2014/10.html">2014年10月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_42" href="https://www.cnblogs.com/Javame/archive/2014/09.html">2014年9月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_43" href="https://www.cnblogs.com/Javame/archive/2014/08.html">2014年8月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_44" href="https://www.cnblogs.com/Javame/archive/2014/07.html">2014年7月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_45" href="https://www.cnblogs.com/Javame/archive/2014/06.html">2014年6月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_46" href="https://www.cnblogs.com/Javame/archive/2014/05.html">2014年5月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_47" href="https://www.cnblogs.com/Javame/archive/2014/04.html">2014年4月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_48" href="https://www.cnblogs.com/Javame/archive/2014/03.html">2014年3月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_49" href="https://www.cnblogs.com/Javame/archive/2014/02.html">2014年2月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_50" href="https://www.cnblogs.com/Javame/archive/2014/01.html">2014年1月 (6)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_51" href="https://www.cnblogs.com/Javame/archive/2013/12.html">2013年12月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_52" href="https://www.cnblogs.com/Javame/archive/2013/03.html">2013年3月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_53" href="https://www.cnblogs.com/Javame/archive/2013/02.html">2013年2月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_54" href="https://www.cnblogs.com/Javame/archive/2012/11.html">2012年11月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_55" href="https://www.cnblogs.com/Javame/archive/2012/10.html">2012年10月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_56" href="https://www.cnblogs.com/Javame/archive/2012/09.html">2012年9月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_57" href="https://www.cnblogs.com/Javame/archive/2012/08.html">2012年8月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_58" href="https://www.cnblogs.com/Javame/archive/2012/05.html">2012年5月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_59" href="https://www.cnblogs.com/Javame/archive/2011/09.html">2011年9月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_60" href="https://www.cnblogs.com/Javame/archive/2011/08.html">2011年8月 (5)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_61" href="https://www.cnblogs.com/Javame/archive/2011/04.html">2011年4月 (1)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="sidebar_imagecategory" class="catListImageCategory sidebar-block">
+<h3 class="catListTitle">相册</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_1_Link_0" href="https://www.cnblogs.com/Javame/gallery/604499.html" rel="nofollow">博图(15)</a> </li>
+
+</ul>
+
+</div>
+
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div id="RecentCommentsBlock"><ul>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/Javame/p/9770655.html#4086831">1. Re:Elasticsearch单机双节点集群部署实战</a></li>
+        <li class="recent_comment_body">膜拜大神 ！感谢分享</li>
+        <li class="recent_comment_author">--不停息的全栈engineer</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/Javame/p/9591587.html#4059551">2. Re:月薪1万和月薪3万的程序猿区别在哪？</a></li>
+        <li class="recent_comment_body">原来这样就能月薪3w，学到了。</li>
+        <li class="recent_comment_author">--我一拔剑你就死</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/Javame/p/9364745.html#4033332">3. Re:通过swagger将API业务版本号与Gitlab代码版本号绑定</a></li>
+        <li class="recent_comment_body">@窗外那场雨用了7年的背景了，是能说换就换的嘛.......</li>
+        <li class="recent_comment_author">--一十一.</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/Javame/p/9364745.html#4032341">4. Re:通过swagger将API业务版本号与Gitlab代码版本号绑定</a></li>
+        <li class="recent_comment_body">王老师，你的背景真是丑，该换了</li>
+        <li class="recent_comment_author">--窗外那场雨</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/Javame/p/7389093.html#4012574">5. Re:教你分分钟搞定Docker私有仓库Registry</a></li>
+        <li class="recent_comment_body">底部封面好骚气</li>
+        <li class="recent_comment_author">--boy215</li>
+</ul>
+</div>
+</div>
+</div></div><div id="sidebar_topviewedposts" class="sidebar-block"><div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="https://www.cnblogs.com/Javame/p/3632473.html">1. 最近项目用到Dubbo框架，临时抱佛脚分享一下共探讨。(293034)</a></li><li><a href="https://www.cnblogs.com/Javame/p/3632708.html">2. 基于ZooKeeper的Dubbo注册中心(61798)</a></li><li><a href="https://www.cnblogs.com/Javame/p/3645481.html">3. 通过dubbo暴露接口调用方法，及基于zookeeper的dubbo涉及配置文件(36625)</a></li><li><a href="https://www.cnblogs.com/Javame/p/3968343.html">4. 软件测试人员必备Linux命令（初、中、高级）(34071)</a></li><li><a href="https://www.cnblogs.com/Javame/p/3848258.html">5. Selenium Test 自动化测试 入门级学习笔记(33598)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+<div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="https://www.cnblogs.com/Javame/p/3632473.html">1. 最近项目用到Dubbo框架，临时抱佛脚分享一下共探讨。(21)</a></li><li><a href="https://www.cnblogs.com/Javame/archive/2012/09/17/2689797.html">2. 紫金山游记(10)</a></li><li><a href="https://www.cnblogs.com/Javame/archive/2011/08/25/2153496.html">3. 一天学一个模式_第一天：策略模式(5)</a></li><li><a href="https://www.cnblogs.com/Javame/p/3867686.html">4. Linux Shell 小脚本经典收藏(5)</a></li><li><a href="https://www.cnblogs.com/Javame/p/3910128.html">5. 临别前夕，工作总结  于2014年8月13日 终稿(4)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div id="TopDiggPostsBlock"><ul><li><a href="https://www.cnblogs.com/Javame/p/3632473.html">1. 最近项目用到Dubbo框架，临时抱佛脚分享一下共探讨。(19)</a></li><li><a href="https://www.cnblogs.com/Javame/p/3968343.html">2. 软件测试人员必备Linux命令（初、中、高级）(4)</a></li><li><a href="https://www.cnblogs.com/Javame/p/3867686.html">3. Linux Shell 小脚本经典收藏(4)</a></li><li><a href="https://www.cnblogs.com/Javame/p/3665565.html">4. 【好书摘要】性能优化中CPU、内存、磁盘IO、网络性能的依赖(3)</a></li><li><a href="https://www.cnblogs.com/Javame/p/5881604.html">5. 性能测试晋级教程(2)</a></li></ul></div>
+</div></div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2018 CTO老王
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+<iframe id="google_osd_static_frame_16172288305" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./ELK 日志采集 实战教程 - CTO老王 - 博客园_files/saved_resource(1).html"></iframe></body></html>
